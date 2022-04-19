@@ -1,39 +1,51 @@
-# History files
-.Rhistory
-.Rapp.history
+#Figure 1
+library(fda); library(fda.usc);
+data(aemet)
+fourier.basis <- create.fourier.basis(rangeval=aemet$temp$rangeval, nbasis=51)
+temp.fd <- Data2fd(argvals=aemet$temp$argvals, y=t(aemet$temp$data), basisobj=fourier.basis)
+plot(temp.fd,col="grey", xlab="Day",ylab="Temperature (degrees C)", main="Average daily temperatures")
 
-# Session Data files
-.RData
+#Figure 2
+library(fda)
+plot(Electricityconsumption)
 
-# User-specific files
-.Ruserdata
+#Figure 3
+#Taken from other paper
 
-# Example code in package build process
-*-Ex.R
+#Figure 4
+library(fda)
+par(mfrow=c(2,2))
+plot(create.bspline.basis(c(0,1),5))
+plot(create.fourier.basis(c(0,1),5))
+plot(create.bspline.basis(c(0,1),10))
+plot(create.fourier.basis(c(0,1),10))
 
-# Output files from R CMD build
-/*.tar.gz
+#Figure 5
+#USE THE CODE FROM FIGURE 1 AND ADD THE FOLLOWING
+lines(mean.fd(temp.fd), lwd=5)
+lines(sd.fd(temp.fd), col='red', lwd = 5)
 
-# Output files from R CMD check
-/*.Rcheck/
+#Figure 6
+#SAME AS FIGURE 2
 
-# RStudio files
-.Rproj.user/
+#Figure 7
+library(fda);library(fda.usc);library(fds)
+data("Electricityconsumption")
+length(Electricityconsumption$x)
+dim(Electricityconsumption$y)
+plot(Electricityconsumption)
+fourierbasis3 <- create.fourier.basis(c(0,12),nbasis=51)
+fd1 <- Data2fd(c(1:12),Electricityconsumption$y,fourierbasis3)
+plot.fd(fd1, xlab = 'Month', ylab ='Difference log consumption')
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+#Figure 8
+#USE CODE FROM FIGURE 7 AND ADD THE FOLLOWING 
+sfd <- smooth.fdPar(fd1,NULL,0.2)
+plot.fd(sfd, xlab = 'Month', ylab ='Difference log consumption')
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
+#FIGURE 9
 
-# knitr and R markdown default cache directories
-*_cache/
-/cache/
 
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
 
-# R Environment Variables
-.Renviron
+
+
