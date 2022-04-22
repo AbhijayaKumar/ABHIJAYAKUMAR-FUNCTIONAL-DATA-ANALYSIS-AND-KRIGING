@@ -6,13 +6,12 @@ temp.fd <- Data2fd(argvals=aemet$temp$argvals, y=t(aemet$temp$data), basisobj=fo
 plot(temp.fd,col="grey", xlab="Day",ylab="Temperature (degrees C)", main="Average daily temperatures")
 
 #Figure 2
-library(fda)
-plot(Electricityconsumption)
+#CODE IS THE SAME AS FIGURE 7
 
 #Figure 3
 #Taken from other paper
 
-#Figure 4
+#Figure 4 [1][page 4]
 library(fda)
 par(mfrow=c(2,2))
 plot(create.bspline.basis(c(0,1),5))
@@ -20,13 +19,14 @@ plot(create.fourier.basis(c(0,1),5))
 plot(create.bspline.basis(c(0,1),10))
 plot(create.fourier.basis(c(0,1),10))
 
-#Figure 5
+#Figure 5 [2][page 7]
 #USE THE CODE FROM FIGURE 1 AND ADD THE FOLLOWING
 lines(mean.fd(temp.fd), lwd=5)
 lines(sd.fd(temp.fd), col='red', lwd = 5)
 
 #Figure 6
-#SAME AS FIGURE 2
+library(fda)
+plot(Electricityconsumption)
 
 #Figure 7
 library(fda);library(fda.usc);library(fds)
@@ -38,12 +38,12 @@ fourierbasis3 <- create.fourier.basis(c(0,12),nbasis=51)
 fd1 <- Data2fd(c(1:12),Electricityconsumption$y,fourierbasis3)
 plot.fd(fd1, xlab = 'Month', ylab ='Difference log consumption')
 
-#Figure 8
+#Figure 8 
 #USE CODE FROM FIGURE 7 AND ADD THE FOLLOWING 
 sfd <- smooth.fdPar(fd1,NULL,0.2)
 plot.fd(sfd, xlab = 'Month', ylab ='Difference log consumption')
 
-#FIGURE 9
+#FIGURE 9 [1][pages 27-28]
 library(fda); library(fds);library(fda.usc)
 data(aemet)
 aemet$logprec
@@ -80,7 +80,7 @@ s.lp.fd <- smooth.fdPar(temp.fd, harmaccelLfd , 10^7)
 plot(aemet$logprec$data[1,])
 lines(s.lp.fd[1,], col = 'red')
 
-#FIGURE 10
+#FIGURE 10 
 library(fda); library(fda.usc); library(geofd);library(geoR)
 data(aemet)
 aemet$temp$data
@@ -122,7 +122,7 @@ plot(okfd.re$datafd,xlab="Day", ylab="Temperature (Degrees C)")
 lines(okfd.re$datafd[66], col = 'blue', lwd=4)
 lines(okfd.re$krig.new.data, col='red',lwd=4)
 
-#FIGURE 14
+#FIGURE 14 [1][page]
 library(fda); library(fda.usc); library(geofd);library(geoR)
 data(aemet)
 aemet$temp$data
@@ -151,6 +151,6 @@ plot(okfd.re$datafd, col=8, main="Estimating the mean using Kriging ",xlab='Day'
 lines(day.5, mean.temp, lwd=3, col='blue')
 lines(day.5,w.mean.temp,lwd=3)
 
-
-
+# [1] Piotr Kokoszka and Matthew Reimherr. Introduction to Functional Data Analysis. 1st. Chapman and Hall/CRC, 2017
+# [2] James Ramsay, Giles Hooker, and Spencer Graves. Functional Data Analysis with R and MATLAB. Springer New York, 2009.
 
