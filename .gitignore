@@ -70,7 +70,7 @@ library(fda); library(fds);library(fda.usc)
 data(aemet)
 aemet$logprec
 fourierbasis <- create.fourier.basis(c(0,365),nbasis=51)
-temp.fd1 <- Data2fd(aemet$logprec$argvals,t(aemet$logprec$data),fourierbasis)
+temp.fd <- Data2fd(aemet$logprec$argvals,t(aemet$logprec$data),fourierbasis)
 plot.fd(temp.fd1, main = 'Daily Temperature Average for 73 Weather Stations in Spain', ylab= 'Temperature', xlab = 'Day')
 dayrange  <- c(0,365)
 Lbasis  <- create.constant.basis(dayrange,
@@ -81,11 +81,12 @@ bwtlist <- fd2list(bfdobj)
 harmaccelLfd <- Lfd(3, bwtlist)
 
 par(mfrow = c(1,2))
-plot(aemet$logprec$data[1,])
+plot(aemet$logprec$data[1,], xlab = 'Day', ylab = 'Log precipitation')
 lines(temp.fd[1,])
 s.lp.fd <- smooth.fdPar(temp.fd, harmaccelLfd , 10^7)
-plot(aemet$logprec$data[1,])
+plot(aemet$logprec$data[1,], xlab = 'Day', ylab = 'Log precipitation')
 lines(s.lp.fd[1,], col = 'red')
+
 
 #FIGURE 8
 library(fda)
