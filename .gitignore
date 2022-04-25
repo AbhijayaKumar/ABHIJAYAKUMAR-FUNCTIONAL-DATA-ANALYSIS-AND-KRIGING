@@ -6,7 +6,14 @@ temp.fd <- Data2fd(argvals=aemet$temp$argvals, y=t(aemet$temp$data), basisobj=fo
 plot(temp.fd,col="grey", xlab="Day",ylab="Temperature (degrees C)", main="Average daily temperatures")
 
 #Figure 2
-#CODE IS THE SAME AS FIGURE 7
+library(fda);library(fda.usc);library(fds)
+data("Electricityconsumption")
+length(Electricityconsumption$x)
+dim(Electricityconsumption$y)
+plot(Electricityconsumption)
+fourierbasis3 <- create.fourier.basis(c(0,12),nbasis=51)
+fd1 <- Data2fd(c(1:12),Electricityconsumption$y,fourierbasis3)
+plot.fd(fd1, xlab = 'Month', ylab ='Difference log consumption')
 
 #Figure 3
 #Taken from other paper
@@ -24,26 +31,9 @@ plot(create.fourier.basis(c(0,1),10))
 lines(mean.fd(temp.fd), lwd=5)
 lines(sd.fd(temp.fd), col='red', lwd = 5)
 
-#Figure 6
-library(fda)
-plot(Electricityconsumption)
 
-#Figure 7
-library(fda);library(fda.usc);library(fds)
-data("Electricityconsumption")
-length(Electricityconsumption$x)
-dim(Electricityconsumption$y)
-plot(Electricityconsumption)
-fourierbasis3 <- create.fourier.basis(c(0,12),nbasis=51)
-fd1 <- Data2fd(c(1:12),Electricityconsumption$y,fourierbasis3)
-plot.fd(fd1, xlab = 'Month', ylab ='Difference log consumption')
 
-#Figure 8 
-#USE CODE FROM FIGURE 7 AND ADD THE FOLLOWING 
-sfd <- smooth.fdPar(fd1,NULL,0.2)
-plot.fd(sfd, xlab = 'Month', ylab ='Difference log consumption')
-
-#FIGURE 9 [1][pages 27-28]
+#FIGURE 6 [1][pages 27-28]
 library(fda); library(fds);library(fda.usc)
 data(aemet)
 aemet$logprec
@@ -73,12 +63,36 @@ for(i in 1:nlam){
 }
 plot(loglam,gcvsave, type = 'b', lwd = 2)
 
+
+#FIGURE 7
+
+library(fda); library(fds);library(fda.usc)
+data(aemet)
+aemet$logprec
+fourierbasis <- create.fourier.basis(c(0,365),nbasis=51)
+temp.fd1 <- Data2fd(aemet$logprec$argvals,t(aemet$logprec$data),fourierbasis)
+plot.fd(temp.fd1, main = 'Daily Temperature Average for 73 Weather Stations in Spain', ylab= 'Temperature', xlab = 'Day')
+dayrange  <- c(0,365)
+Lbasis  <- create.constant.basis(dayrange,
+                                 axes=list("axesIntervals"))
+Lcoef   <- matrix(c(0,(2*pi/365)^2,0),1,3)
+bfdobj  <- fd(Lcoef,Lbasis)
+bwtlist <- fd2list(bfdobj)
+harmaccelLfd <- Lfd(3, bwtlist)
+
 par(mfrow = c(1,2))
 plot(aemet$logprec$data[1,])
 lines(temp.fd[1,])
 s.lp.fd <- smooth.fdPar(temp.fd, harmaccelLfd , 10^7)
 plot(aemet$logprec$data[1,])
 lines(s.lp.fd[1,], col = 'red')
+
+#FIGURE 8
+library(fda)
+plot(Electricityconsumption)
+
+#FIGURE 9
+#SAME CODE AS FIGURE 2
 
 #FIGURE 10 
 library(fda); library(fda.usc); library(geofd);library(geoR)
